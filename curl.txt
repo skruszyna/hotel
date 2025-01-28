@@ -1,0 +1,132 @@
+# Rejestracja użytkownika
+curl -X POST http://127.0.0.1:5000/register \
+-H "Content-Type: application/json" \
+-d '{
+  "first_name": "Anna",
+  "last_name": "Kowalska",
+  "email": "anna.kowalska@example.com",
+  "phone": "123456789",
+  "password": "Passw0rd"
+}'
+
+# Odpowiedź:
+# {
+#   "message": "User registered successfully"
+# }
+
+# Rejestracja użytkownika z istniejącym e-mailem
+curl -X POST http://127.0.0.1:5000/register \
+-H "Content-Type: application/json" \
+-d '{
+  "first_name": "Jan",
+  "last_name": "Nowak",
+  "email": "anna.kowalska@example.com",
+  "phone": "987654321",
+  "password": "AnotherPassw0rd"
+}'
+
+# Odpowiedź:
+# {
+#   "error": "Email already exists"
+# }
+
+# Rejestracja bez pełnych danych
+curl -X POST http://127.0.0.1:5000/register \
+-H "Content-Type: application/json" \
+-d '{
+  "first_name": "Adam",
+  "email": "adam.nowak@example.com",
+  "password": "SimplePass1"
+}'
+
+# Odpowiedź:
+# {
+#   "error": "No input data provided"
+# }
+
+# Rejestracja z błędnym formatem danych
+curl -X POST http://127.0.0.1:5000/register \
+-H "Content-Type: application/json" \
+-d '{
+  "first_name": "Ewa",
+  "last_name": "Nowak",
+  "email": "wrong_email_format",
+  "phone": "12345",
+  "password": "simple"
+}'
+
+# Odpowiedź:
+# {
+#   "error": "Invalid email format"
+# }
+
+# Walidacja unikalności numeru telefonu
+curl -X POST http://127.0.0.1:5000/register \
+-H "Content-Type: application/json" \
+-d '{
+  "first_name": "Karolina",
+  "last_name": "Wiśniewska",
+  "email": "karolina@example.com",
+  "phone": "123456789",
+  "password": "SecurePass123"
+}'
+
+# Odpowiedź:
+# {
+#   "error": "Phone number already exists"
+# }
+
+# Odczyt użytkowników (jeśli dostępny endpoint GET /users)
+curl -X GET http://127.0.0.1:5000/users
+
+# Odpowiedź:
+# [
+#   {
+#     "id": 1,
+#     "first_name": "Anna",
+#     "last_name": "Kowalska",
+#     "email": "anna.kowalska@example.com",
+#     "phone": "123456789",
+#     "created_at": "2025-01-01T12:00:00"
+#   },
+#   {
+#     "id": 2,
+#     "first_name": "Jan",
+#     "last_name": "Nowak",
+#     "email": "jan.nowak@example.com",
+#     "phone": "987654321",
+#     "created_at": "2025-01-01T12:30:00"
+#   }
+# ]
+
+# Logowanie użytkownika (jeśli dostępny endpoint POST /login)
+curl -X POST http://127.0.0.1:5000/login \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "anna.kowalska@example.com",
+  "password": "Passw0rd"
+}'
+
+# Odpowiedź w przypadku sukcesu:
+# {
+#   "message": "Logged in successfully",
+#   "user": {
+#     "id": 1,
+#     "first_name": "Anna",
+#     "last_name": "Kowalska",
+#     "email": "anna.kowalska@example.com"
+#   }
+# }
+
+# Odpowiedź w przypadku błędu:
+# {
+#   "error": "Invalid email or password"
+# }
+
+# Wylogowanie użytkownika (jeśli dostępny endpoint POST /logout)
+curl -X POST http://127.0.0.1:5000/logout
+
+# Odpowiedź:
+# {
+#   "message": "Logged out successfully"
+# }
