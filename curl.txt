@@ -1,4 +1,6 @@
-# Rejestracja użytkownika
+# ============================================
+#  REJESTRACJA UŻYTKOWNIKA
+# ============================================
 curl -X POST http://127.0.0.1:5000/register \
 -H "Content-Type: application/json" \
 -d '{
@@ -14,7 +16,9 @@ curl -X POST http://127.0.0.1:5000/register \
 #   "message": "User registered successfully"
 # }
 
-# Rejestracja użytkownika z istniejącym e-mailem
+# ============================================
+#  WALIDACJA UNIKALNOŚCI ADRESU E-MAIL
+# ============================================
 curl -X POST http://127.0.0.1:5000/register \
 -H "Content-Type: application/json" \
 -d '{
@@ -30,76 +34,9 @@ curl -X POST http://127.0.0.1:5000/register \
 #   "error": "Email already exists"
 # }
 
-# Rejestracja bez pełnych danych
-curl -X POST http://127.0.0.1:5000/register \
--H "Content-Type: application/json" \
--d '{
-  "first_name": "Adam",
-  "email": "adam.nowak@example.com",
-  "password": "SimplePass1"
-}'
-
-# Odpowiedź:
-# {
-#   "error": "No input data provided"
-# }
-
-# Rejestracja z błędnym formatem danych
-curl -X POST http://127.0.0.1:5000/register \
--H "Content-Type: application/json" \
--d '{
-  "first_name": "Ewa",
-  "last_name": "Nowak",
-  "email": "wrong_email_format",
-  "phone": "12345",
-  "password": "simple"
-}'
-
-# Odpowiedź:
-# {
-#   "error": "Invalid email format"
-# }
-
-# Walidacja unikalności numeru telefonu
-curl -X POST http://127.0.0.1:5000/register \
--H "Content-Type: application/json" \
--d '{
-  "first_name": "Karolina",
-  "last_name": "Wiśniewska",
-  "email": "karolina@example.com",
-  "phone": "123456789",
-  "password": "SecurePass123"
-}'
-
-# Odpowiedź:
-# {
-#   "error": "Phone number already exists"
-# }
-
-# Odczyt użytkowników (jeśli dostępny endpoint GET /users)
-curl -X GET http://127.0.0.1:5000/users
-
-# Odpowiedź:
-# [
-#   {
-#     "id": 1,
-#     "first_name": "Anna",
-#     "last_name": "Kowalska",
-#     "email": "anna.kowalska@example.com",
-#     "phone": "123456789",
-#     "created_at": "2025-01-01T12:00:00"
-#   },
-#   {
-#     "id": 2,
-#     "first_name": "Jan",
-#     "last_name": "Nowak",
-#     "email": "jan.nowak@example.com",
-#     "phone": "987654321",
-#     "created_at": "2025-01-01T12:30:00"
-#   }
-# ]
-
-# Logowanie użytkownika (jeśli dostępny endpoint POST /login)
+# ============================================
+#  LOGOWANIE UŻYTKOWNIKA
+# ============================================
 curl -X POST http://127.0.0.1:5000/login \
 -H "Content-Type: application/json" \
 -d '{
@@ -118,15 +55,63 @@ curl -X POST http://127.0.0.1:5000/login \
 #   }
 # }
 
-# Odpowiedź w przypadku błędu:
-# {
-#   "error": "Invalid email or password"
-# }
+# ============================================
+#  POBIERANIE LISTY UŻYTKOWNIKÓW (JEŚLI DOSTĘPNE)
+# ============================================
+curl -X GET http://127.0.0.1:5000/users
 
-# Wylogowanie użytkownika (jeśli dostępny endpoint POST /logout)
+# ============================================
+#  WYLOGOWANIE UŻYTKOWNIKA
+# ============================================
 curl -X POST http://127.0.0.1:5000/logout
 
 # Odpowiedź:
 # {
 #   "message": "Logged out successfully"
 # }
+
+# ============================================
+#  POBIERANIE LISTY USŁUG
+# ============================================
+curl -X GET http://127.0.0.1:5000/api/services
+
+# Odpowiedź:
+# [
+#   {
+#     "id": 1,
+#     "name": "Strzyżenie psa",
+#     "description": "Profesjonalne strzyżenie psów",
+#     "price": 80.0,
+#     "duration": "45 min",
+#     "category": "Pielęgnacja",
+#     "availability": ["2024-02-10T10:00", "2024-02-10T12:00"]
+#   }
+# ]
+
+# ============================================
+# DODAWANIE NOWEJ USŁUGI
+# ============================================
+curl -X POST http://127.0.0.1:5000/api/services \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "Mycie psa",
+  "description": "Kompleksowe mycie psów dużych ras",
+  "price": 50.0,
+  "duration": "30 min",
+  "category": "Pielęgnacja",
+  "availability": ["2024-02-15T09:00", "2024-02-15T11:00"]
+}'
+
+# Odpowiedź:
+# {
+#   "message": "Service added successfully",
+#   "service_id": 2
+# }
+
+# ============================================
+# SPRAWDZENIE DOSTĘPNOŚCI KONKRETNEJ USŁUGI
+# ============================================
+curl -X GET http://127.0.0.1:5000/api/services/2/availability
+
+# Odpowiedź:
+# ["2024-02-15T09:00", "2024-02-15T11:00"]
