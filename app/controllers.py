@@ -4,7 +4,7 @@ from app.models import db, User, Service
 bp = Blueprint("main", __name__)
 
 # ========================================
-# 📌 REJESTRACJA UŻYTKOWNIKA
+#  REJESTRACJA UŻYTKOWNIKA
 # ========================================
 @bp.route("/register", methods=["POST"])
 def register():
@@ -32,7 +32,7 @@ def register():
     return jsonify({"message": "User registered successfully"}), 201
 
 # ========================================
-# 📌 WYŚWIETLANIE DOSTĘPNYCH USŁUG
+#  WYŚWIETLANIE DOSTĘPNYCH USŁUG
 # ========================================
 @bp.route("/api/services", methods=["GET"])
 def get_services():
@@ -57,7 +57,7 @@ def get_services():
     return jsonify(result), 200
 
 # ========================================
-# 📌 DODAWANIE NOWEJ USŁUGI
+#  DODAWANIE NOWEJ USŁUGI
 # ========================================
 @bp.route("/api/services", methods=["POST"])
 def add_service():
